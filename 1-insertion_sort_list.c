@@ -22,7 +22,7 @@ void insertion_sort_list(listint_t **list)
 
 		while (current->prev && current->n < current->prev->n)
 		{
-			insert_swap_nodes(list, current->prev, current);
+			iswap_nodes(list, current->prev, current);
 		}
 
 		current = next;
@@ -30,29 +30,29 @@ void insertion_sort_list(listint_t **list)
 }
 
 /**
- * insert_swap_nodes - insert and swap a node into a sorted doubly linked list
+ * iswap_nodes - insert and swap a node into a sorted doubly linked list
  * @sort_list: Double pointer to the element of the sorted list
- * @nod1: Pointer to the node1
- * @nod2: Pointer to the node2
+ * @node1: Pointer to the node1
+ * @node2: Pointer to the node2
  *
  * Return: void
  */
-void insert_swap_nodes(listint_t **sort_list, listint_t *nod1, listint_t *nod2)
+void iswap_nodes(listint_t **sort_list, listint_t *node1, listint_t *node2)
 {
-	if (nod1->prev)
-		nod1->prev->next = nod2;
+	if (node1->prev)
+		node1->prev->next = node2;
 
-	if (nod2->next)
-		nod2->next->prev = nod1;
+	if (node2->next)
+		node2->next->prev = node1;
 
-	nod1->next = nod2->next;
-	nod2->prev = nod1->prev;
+	node1->next = node2->next;
+	node2->prev = node1->prev;
 
-	nod1->prev = nod2;
-	nod2->next = nod1;
+	node1->prev = node2;
+	node2->next = node1;
 
-	if (nod1 == *sort_list)
-		*sort_list = nod2;
+	if (node1 == *sort_list)
+		*sort_list = node2;
 
 	print_list(*sort_list);
 }
