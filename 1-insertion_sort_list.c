@@ -11,7 +11,7 @@ void insertion_sort_list(listint_t **list)
 {
 	listint_t *current, *next;
 
-	if (list == NULL || *list == NULL)
+	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
 
 	current = (*list)->next;
@@ -20,50 +20,39 @@ void insertion_sort_list(listint_t **list)
 	{
 		next = current->next;
 
-		if (current->prev)
-			current->prev->next = current->next;
-		if (current->next)
-			current->next->prev = current->prev;
-
-		insert_sorted(list, current);
-		print_list(*list);
+		while (current->prev && current->n < current->prev->n)
+		{
+			insert_swap_nodes(list, current->prev, current);
+		}
 
 		current = next;
 	}
 }
 
 /**
- * insert_sorted - insert a node into a sorted doubly linked list
- * @sorted_list: Double pointer to the element of the sorted list
- * @node: Pointer to the node
+ * insert_swap_nodes - insert and swap a node into a sorted doubly linked list
+ * @sort_list: Double pointer to the element of the sorted list
+ * @nod1: Pointer to the node1
+ * @nod2: Pointer to the node2
  *
  * Return: void
  */
-void insert_sorted(listint_t **sorted_list, listint_t *node)
+void insert_swap_nodes(listint_t **sort_list, listint_t *nod1, listint_t *nod2)
 {
-	listint_t *current;
+	if (nod1->prev)
+		nod1->prev->next = nod2;
 
-	if (*sorted_list == NULL || (*sorted_list)->n >= node->n)
-	{
+	if (nod2->next)
+		nod2->next->prev = nod1;
 
-		node->next = *sorted_list;
-		node->prev = NULL;
-		if (*sorted_list)
-			(*sorted_list)->prev = node;
+	nod1->next = nod2->next;
+	nod2->prev = nod1->prev;
 
-		*sorted_list = node;
-	}
-	else
-	{
+	nod1->prev = nod2;
+	nod2->next = nod1;
 
-		current = *sorted_list;
-		while (current->next && current->next->n < node->n)
-			current = current->next;
+	if (nod1 == *sort_list)
+		*sort_list = nod2;
 
-		node->next = current->next;
-		if (current->next)
-			current->next->prev = node;
-		current->next = node;
-		node->prev = current;
-	}
+	print_list(*sort_list);
 }
